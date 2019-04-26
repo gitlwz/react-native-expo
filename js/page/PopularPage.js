@@ -4,6 +4,7 @@ import {
     createMaterialTopTabNavigator,
     createAppContainer
 } from "react-navigation";
+import NavigationUtil from "../navigator/NavigationUtil";
 
 export default class PopularPage extends React.Component {
 
@@ -39,11 +40,15 @@ export default class PopularPage extends React.Component {
 }
 
 class PopularTab extends React.Component {
+    _onPress = () => {
+        NavigationUtil.goPage({}, "DetailPage")
+    }
     render() {
         const { tabLabel } = this.props;
         return (
             <View style={styles.container}>
                 <Text>{tabLabel}1</Text>
+                <Text onPress={this._onPress}>跳转到详情页</Text>
             </View>
         );
     }

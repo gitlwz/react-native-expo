@@ -13,7 +13,12 @@ import TrendingPage from "./TrendingPage";
 import FavoritePage from "./FavoritePage";
 import MyPage from "./MyPage";
 
+import NavigationUtil from "../navigator/NavigationUtil"
+
 export default class HomePage extends React.Component {
+    componentWillMount = () => {
+        NavigationUtil.navigation = this.props.navigation;
+    }
     _tabNavigator = () => {
         return createAppContainer(
             createBottomTabNavigator({
