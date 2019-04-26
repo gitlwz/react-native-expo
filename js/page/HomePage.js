@@ -13,7 +13,6 @@ import TrendingPage from "./TrendingPage";
 import FavoritePage from "./FavoritePage";
 import MyPage from "./MyPage";
 
-
 export default class HomePage extends React.Component {
     _tabNavigator = () => {
         return createAppContainer(
