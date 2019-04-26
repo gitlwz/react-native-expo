@@ -43,7 +43,7 @@ class PopularTab extends React.Component {
         const { tabLabel } = this.props;
         return (
             <View style={styles.container}>
-                <Text>{tabLabel}</Text>
+                <Text>{tabLabel}1</Text>
             </View>
         );
     }
