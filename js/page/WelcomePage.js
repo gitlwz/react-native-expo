@@ -7,7 +7,7 @@ export default class WelcomePage extends React.Component {
             NavigationUtil.resetToHomPage({
                 navigation: this.props.navigation
             })
-        }, 1000)
+        }, 200)
     }
     componentWillUnmount = () => {
         this.timer && clearTimeout(this.timer)
@@ -16,6 +16,7 @@ export default class WelcomePage extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>WelcomePage !</Text>
+
             </View>
         );
     }
