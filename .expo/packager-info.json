@@ -1,10 +1,9 @@
 {
+  "expoServerNgrokUrl": "https://3p-uwa.anonymous.my-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.3p-uwa.anonymous.my-app.exp.direct",
+  "ngrokPid": 16888,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 26736,
-  "expoServerNgrokUrl": "https://3p-uwa.anonymous.my-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.3p-uwa.anonymous.my-app.exp.direct",
-  "ngrokPid": 10772,
-  "webpackServerPort": null
+  "packagerPid": 12168
 }
