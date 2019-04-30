@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../action/index';
 import NavigationUtil from "../navigator/NavigationUtil";
@@ -21,6 +21,9 @@ class MyPage extends React.Component {
     _goDataStoreDemoPage = () => {
         NavigationUtil.goPage({}, "DataStoreDemoPage")
     }
+    _clear = () => {
+        AsyncStorage.clear();
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -28,6 +31,10 @@ class MyPage extends React.Component {
                 <Button
                     title="改变主题颜色"
                     onPress={this._changeTheme}
+                />
+                <Button
+                    title="清除所有缓存"
+                    onPress={this._clear}
                 />
                 <Text onPress={this._onPress}>跳转到详情页</Text>
                 <Text onPress={this._goFetch}>Fetch 使用</Text>

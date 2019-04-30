@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, RefreshControl } from 'react-native';
+import { FlatList, StyleSheet, Text, View, RefreshControl, ActivityIndicator, DeviceInfo, NativeModules } from 'react-native';
 import {
     createMaterialTopTabNavigator,
     createAppContainer
@@ -7,12 +7,14 @@ import {
 import PopularItem from "../common/PopularItem"
 import { connect } from 'react-redux';
 import actions from '../action/index';
-
+import Toast from 'react-native-easy-toast'
+import NavigationBar from "../common/NavigationBar";
+import NavigationUtil from '../navigator/NavigationUtil';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
-const THEME_COLOR = "red"
-
+const THEME_COLOR = "#678"
+console.log("DeviceInfo===============", DeviceInfo, NativeModules)
 export default class PopularPage extends React.Component {
     constructor(props) {
         super(props);
@@ -31,6 +33,15 @@ export default class PopularPage extends React.Component {
         return tabs;
     }
     render() {
+        let statusBar = {
+            backgroundColor: THEME_COLOR,
+            barStyle: "light-content",
+        }
+        let navigationBar = <NavigationBar
+            title={'最热'}
+            statusBar={statusBar}
+            style={{ backgroundColor: THEME_COLOR }}
+        />
         const TabNavigator = createAppContainer(
             createMaterialTopTabNavigator(
                 this._genTabs(), {
@@ -39,35 +50,64 @@ export default class PopularPage extends React.Component {
                         upperCaseLabel: false,
                         scrollEnabled: true,
                         style: {
-                            backgroundColor: "#678"
+                            backgroundColor: "#678",
+                            height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
                         },
                         indicatorStyle: styles.indicatorStyle,
                         labelStyle: styles.labelStyle
-                    }
+                    },
+                    lazy: true
                 }
             )
         )
         return (
-            <View style={{ flex: 1, marginTop: 20 }}>
+            <View style={{ flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated ? 30 : 0 }}>
+                {navigationBar}
                 <TabNavigator />
             </View>
         );
     }
 }
-
-class PopularTab extends React.Component {
+const pageSize = 10 //常量
+class PopularTab extends React.PureComponent {
     constructor(props) {
         super(props)
         const { tabLabel } = this.props;
         this.storeName = tabLabel;
     }
-    componentWillMount = () => {
+    componentDidMount = () => {
         this._loadData();
     }
-    _loadData = () => {
-        const { onLoadPopularData } = this.props;
+    _loadData = (loadMore) => {
+        const { onRefreshPopular, onLoadMorePopular } = this.props;
         const url = this._genFetchUrl(this.storeName)
-        onLoadPopularData(this.storeName, url)
+        const store = this._store();
+        if (loadMore) {
+            onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, callBack => {
+                this.refs.toast.show('没有更多了');
+            });
+        } else {
+            onRefreshPopular(this.storeName, url, pageSize);
+        }
+    }
+    /**
+     * 获取与当前页面有关的数据
+     * @returns {*}
+     * @private
+     */
+    _store() {
+        const { popular } = this.props;
+        let store = popular[this.storeName];
+        if (!store) {
+            store = {
+                items: [],
+                isLoading: false,
+                projectModels: [],//要显示的数据
+                hideLoadingMore: true,//默认隐藏加载更多
+                pageIndex: 1,
+            }
+        }
+        return store;
     }
     _genFetchUrl = (key) => {
         return URL + key + QUERY_STR;
@@ -77,20 +117,30 @@ class PopularTab extends React.Component {
         return <PopularItem
             item={item}
             onSelect={
-                () => { }
+                () => {
+                    NavigationUtil.goPage({
+                        projectModel: item
+                    }, "DetailPage")
+                }
             }
         />
     }
+    _genIndicator = () => {
+        return this._store().hideLoadingMore ? null :
+            <View style={styles.indicatorContainer}>
+                <ActivityIndicator
+                    style={styles.indicator}
+                />
+                <Text>正在加载更多</Text>
+            </View>
+    }
     render() {
         const { popular } = this.props;
-        let store = popular[this.storeName] || {
-            items: [],
-            isLoading: false
-        }
+        let store = this._store();
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={store.items}
+                    data={store.projectModels}
                     renderItem={this._renderItem}
                     keyExtractor={item => "" + item.id}
                     refreshControl={
@@ -103,6 +153,25 @@ class PopularTab extends React.Component {
                             tintColor={THEME_COLOR}
                         />
                     }
+                    ListFooterComponent={this._genIndicator()}
+                    onEndReached={() => {
+                        console.log('---onEndReached----');
+                        setTimeout(() => {
+                            if (this.canLoadMore) {//fix 滚动时两次调用onEndReached https://github.com/facebook/react-native/issues/14015
+                                this._loadData(true);
+                                this.canLoadMore = false;
+                            }
+                        }, 100)
+                    }}
+                    onEndReachedThreshold={0.5}
+                    onMomentumScrollBegin={() => {
+                        this.canLoadMore = true; //fix 初始化时页调用onEndReached的问题
+                        console.log('---onMomentumScrollBegin-----')
+                    }}
+                />
+                <Toast
+                    ref={"toast"}
+                    position={"center"}
                 />
             </View>
         );
@@ -113,7 +182,8 @@ const mapStateToProps = state => ({
     popular: state.popular
 });
 const mapDispatchToProps = dispatch => ({
-    onLoadPopularData: (storeName, url) => dispatch(actions.onLoadPopularData(storeName, url))
+    onRefreshPopular: (storeName, url, pageSize) => dispatch(actions.onRefreshPopular(storeName, url, pageSize)),
+    onLoadMorePopular: (storeName, pageIndex, pageSize, items, callBack) => dispatch(actions.onLoadMorePopular(storeName, pageIndex, pageSize, items, callBack)),
 });
 
 const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
@@ -123,14 +193,22 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     tabStyle: {
+        // minWidth: 50 //fix minWidth会导致tabStyle初次加载时闪烁
+        padding: 0
     },
     indicatorStyle: {
-        height: 0.5,
-        backgroundColor: "#fff"
+        height: 2,
+        backgroundColor: 'white'
     },
     labelStyle: {
         fontSize: 13,
-        marginTop: 6,
-        marginBottom: 6
+        margin: 0,
+    },
+    indicatorContainer: {
+        alignItems: "center"
+    },
+    indicator: {
+        color: 'red',
+        margin: 10
     }
 });

@@ -1,20 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import DynamicTabNavigator from "../navigator/DynamicTabNavigator"
 import NavigationUtil from "../navigator/NavigationUtil"
-import { BackHandler } from "react-native";
+import BackPressComponent from "../common/BackPressComponent";
 import { NavigationActions } from "react-navigation";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class HomePage extends React.Component {
-    componentWillMount = () => {
+    constructor(props) {
+        super(props)
+        this.backPress = new BackPressComponent({ backPress: () => this.onBackPress() });
         NavigationUtil.navigation = this.props.navigation;
     }
     componentDidMount = () => {
-        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+        this.backPress.componentDidMount();
     }
     componentWillUnmount = () => {
-        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+        this.backPress.componentWillUnmount();
     }
     /** * 处理 Android 中的物理返回键 * 
      * https://reactnavigation.org/docs/en/redux-integration.html#handling-the-hardware-back-button-in-android * 

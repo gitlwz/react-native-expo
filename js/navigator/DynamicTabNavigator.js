@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import {
     createBottomTabNavigator,
     createAppContainer
@@ -118,14 +117,6 @@ class TabBarComponent extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
 const mapStateToProps = state => ({
     theme: state.theme.theme,

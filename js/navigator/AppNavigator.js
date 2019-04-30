@@ -34,7 +34,7 @@ const MainNavigator = createStackNavigator({
     DetailPage: {
         screen: DetailPage,
         navigationOptions: {
-            title: "详情页"
+            header: null
         }
     },
     FetchDemoPage: {

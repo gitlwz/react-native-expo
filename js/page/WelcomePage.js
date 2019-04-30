@@ -16,7 +16,6 @@ export default class WelcomePage extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>WelcomePage !</Text>
-
             </View>
         );
     }
