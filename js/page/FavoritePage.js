@@ -80,7 +80,7 @@ class FavoriteTab extends PureComponent {
     }
 
     componentDidMount() {
-        // this.loadData(true);
+        this.loadData(true);
         EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.listener = data => {
             if (data.to === 2) {
                 this.loadData(false);

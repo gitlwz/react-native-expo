@@ -106,9 +106,9 @@ class PopularTab extends React.PureComponent {
             onLoadMorePopular(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callBack => {
                 this.refs.toast.show('没有更多了');
             });
-
         } else if (refreshFavorite) {
             onFlushPopularFavorite(this.storeName, store.pageIndex, pageSize, store.items, favoriteDao)
+            this.isFavoriteChanged = false;
         } else {
             onRefreshPopular(this.storeName, url, pageSize, favoriteDao);
         }
