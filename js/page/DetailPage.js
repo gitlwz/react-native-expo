@@ -5,6 +5,7 @@ import ViewUtil from "../util/ViewUtil";
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from "../navigator/NavigationUtil";
 import BackPressComponent from "../common/BackPressComponent";
+import FavoriteDao from "../expand/dao/FavoriteDao";
 const TRENDING_URL = 'https://github.com/';
 const THEME_COLOR = '#678';
 
@@ -12,13 +13,16 @@ export default class DetailPage extends React.PureComponent {
     constructor(props) {
         super(props)
         this.params = this.props.navigation.state.params;
-        const { projectModel = {} } = this.params;
+        const { projectModel = {}, flag } = this.params;
+        this.favoriteDao = new FavoriteDao(flag);
         // this.url = projectModel.item.html_url || TRENDING_URL + projectModel.item.fullName;
-        this.url = projectModel.html_url || TRENDING_URL + projectModel.fullName;
-        this.title = projectModel.full_name || projectModel.fullName;
+        this.url = projectModel.item.html_url || TRENDING_URL + projectModel.item.fullName;
+        this.title = projectModel.item.full_name || projectModel.item.fullName;
         this.canGoBack = false;
-
         this.backPress = new BackPressComponent({ backPress: () => this.onBackPress() });
+        this.state = {
+            isFavorite: projectModel.isFavorite
+        }
     }
 
     componentDidMount() {

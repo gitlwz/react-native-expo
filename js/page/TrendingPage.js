@@ -12,11 +12,14 @@ import NavigationBar from "../common/NavigationBar";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import TrendingDialog, { TimeSpans } from '../common/TrendingDialog'
 import NavigationUtil from '../navigator/NavigationUtil';
+import FavoriteDao from "../expand/dao/FavoriteDao";
+import { FLAG_STORAGE } from "../expand/dao/DataStore";
+import FavoriteUtil from "../util/FavoriteUtil";
 
 const EVENT_TYPE_TIME_SPAN_CHANGE = "EVENT_TYPE_TIME_SPAN_CHANGE";
 const URL = 'https://github.com/trending/';
 const THEME_COLOR = "#678"
-
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending);
 export default class TrendingPage extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -138,11 +141,11 @@ class TrendingTab extends React.PureComponent {
         const url = this._genFetchUrl(this.storeName)
         const store = this._store();
         if (loadMore) {
-            onLoadMoreTrending(this.storeName, ++store.pageIndex, pageSize, store.items, callBack => {
+            onLoadMoreTrending(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callBack => {
                 this.refs.toast.show('没有更多了');
             });
         } else {
-            onRefreshTrending(this.storeName, url, pageSize);
+            onRefreshTrending(this.storeName, url, pageSize, favoriteDao);
         }
     }
     /**
@@ -170,7 +173,7 @@ class TrendingTab extends React.PureComponent {
     _renderItem = (data) => {
         const item = data.item
         return <TrendingItem
-            item={item}
+            projectModel={item}
             onSelect={
                 () => {
                     NavigationUtil.goPage({
@@ -178,6 +181,7 @@ class TrendingTab extends React.PureComponent {
                     }, "DetailPage")
                 }
             }
+            onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_trending)}
         />
     }
     _genIndicator = () => {
@@ -238,8 +242,8 @@ const mapStateToProps = state => ({
     trending: state.trending
 });
 const mapDispatchToProps = dispatch => ({
-    onRefreshTrending: (storeName, url, pageSize) => dispatch(actions.onRefreshTrending(storeName, url, pageSize)),
-    onLoadMoreTrending: (storeName, pageIndex, pageSize, items, callBack) => dispatch(actions.onLoadMoreTrending(storeName, pageIndex, pageSize, items, callBack)),
+    onRefreshTrending: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onRefreshTrending(storeName, url, pageSize, favoriteDao)),
+    onLoadMoreTrending: (storeName, pageIndex, pageSize, items, favoriteDao, callBack) => dispatch(actions.onLoadMoreTrending(storeName, pageIndex, pageSize, items, favoriteDao, callBack)),
 });
 
 const TrendingTabPage = connect(mapStateToProps, mapDispatchToProps)(TrendingTab);

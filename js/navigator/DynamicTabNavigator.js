@@ -15,6 +15,7 @@ import TrendingPage from "../page/TrendingPage";
 import FavoritePage from "../page/FavoritePage";
 import MyPage from "../page/MyPage";
 
+
 //在这里是配置路由页面
 const TABS = {
     PopularPage: {
