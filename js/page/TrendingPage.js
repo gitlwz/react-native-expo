@@ -175,9 +175,11 @@ class TrendingTab extends React.PureComponent {
         return <TrendingItem
             projectModel={item}
             onSelect={
-                () => {
+                (callBack) => {
                     NavigationUtil.goPage({
-                        projectModel: item
+                        projectModel: item,
+                        flag: FLAG_STORAGE.flag_trending,
+                        callBack: callBack
                     }, "DetailPage")
                 }
             }

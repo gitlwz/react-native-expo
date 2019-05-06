@@ -49,12 +49,26 @@ export default class DetailPage extends React.PureComponent {
         this.canGoBack = e.canGoBack;
         this.url = e.url
     }
+    onFavoriteButtonClick = () => {
+        const { projectModel, callBack } = this.params;
+        const isFavorite = projectModel.isFavorite = !projectModel.isFavorite;
+        callBack && callBack(isFavorite)
+        this.setState({
+            isFavorite: isFavorite,
+        });
+        let key = projectModel.item.fullName ? projectModel.item.fullName : projectModel.item.id.toString();
+        if (projectModel.isFavorite) {
+            this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item));
+        } else {
+            this.favoriteDao.removeFavoriteItem(key);
+        }
+    }
     renderRightButton = () => {
         return (<View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
-                onPress={() => this.onFavoriteButtonClick()}>
+                onPress={this.onFavoriteButtonClick}>
                 <FontAwesome
-                    name={'star-o'}
+                    name={this.state.isFavorite ? 'star' : 'star-o'}
                     size={20}
                     style={{ color: 'white', marginRight: 10 }}
                 />

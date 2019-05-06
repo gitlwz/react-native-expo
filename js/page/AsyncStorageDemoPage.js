@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, AsyncStorage, DeviceInfo, NativeModules } from 'react-native';
 const KEY = "save_key";
+console.log("DeviceInfo===============", DeviceInfo, NativeModules)
 export default class AsyncStorageDemoPage extends React.Component {
     constructor(props) {
         super(props)

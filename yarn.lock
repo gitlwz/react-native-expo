@@ -4802,7 +4802,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -4911,6 +4911,13 @@ react-native-easy-toast@^1.2.0:
   integrity sha512-UtpxnRn1ME+035Uey4VR+9K0P4aVoTcWNOx5QkioWBe3LBKMPb/kZjrQ1LtvWzOyeGP4TeTUTtMX3IOPWv5MtA==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-event-bus@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/react-native-event-bus/-/react-native-event-bus-1.0.0.tgz#e193b17bb8639b623f1d72e8596e0cd8635b59d1"
+  integrity sha512-Ox/aKV0tKZyVU8SuMY/6UPVQ3BRn592iG96dN6AuG5gEx7HnR+DwzvWV3R9e1apkaL31UcUNfBret8r/B4dU8Q==
+  dependencies:
+    prop-types "^15.5.7"
 
 react-native-gesture-handler@~1.0.14:
   version "1.0.17"

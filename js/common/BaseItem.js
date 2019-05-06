@@ -54,7 +54,6 @@ export default class BaseItem extends Component {
     }
 
     _favoriteIcon = () => {
-        console.log("44444444444444")
         return <TouchableOpacity
             style={{ padding: 6 }}
             underlayColor='transparent'
