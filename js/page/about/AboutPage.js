@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Linking, View, TouchableOpacity, ScrollView } from 'react-native';
+import NavigationUtil from "../../navigator/NavigationUtil";
 import { MORE_MENU } from "../../common/MORE_MENU";
 import GlobalStyles from "../../res/GlobalStyles";
 import ViewUtil from "../../util/ViewUtil";
@@ -23,7 +24,35 @@ export default class MyPage extends React.Component {
         }
     }
     onClick = (menu) => {
-
+        let RouteName, params = {};
+        switch (menu) {
+            case MORE_MENU.Tutorial:
+                RouteName = 'WebViewPage';
+                params.title = '教程';
+                params.url = 'https://gitlwz.github.io/';
+                break;
+            case MORE_MENU.About_Author:
+                RouteName = 'AboutMePage';
+                break;
+            case MORE_MENU.Feedback:
+                const url = 'mailto://crazycodeboy@gmail.com';
+                Linking.canOpenURL(url)
+                    .then(support => {
+                        if (!support) {
+                            console.log('Can\'t handle url: ' + url);
+                        } else {
+                            Linking.openURL(url);
+                        }
+                    }).catch(e => {
+                        console.error('An error occurred', e);
+                    });
+                break;
+            default:
+                break;
+        }
+        if (RouteName) {
+            NavigationUtil.goPage(params, RouteName);
+        }
     }
     getItem = (menu) => {
         return ViewUtil.getMenuItem(
