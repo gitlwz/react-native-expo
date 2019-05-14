@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
-import { DeviceInfo, StyleSheet, WebView } from 'react-native';
+import { DeviceInfo, StyleSheet, WebView, View } from 'react-native';
 import NavigationBar from '../common/NavigationBar'
 import ViewUtil from "../util/ViewUtil";
 import NavigationUtil from "../navigator/NavigationUtil";
 import BackPressComponent from "../common/BackPressComponent";
 // import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
-import GlobalStyles from "../res/styles/GlobalStyles";
+import GlobalStyles from "../res/GlobalStyles";
 const THEME_COLOR = '#678';
 
 export default class WebViewPage extends PureComponent {
@@ -50,7 +50,6 @@ export default class WebViewPage extends PureComponent {
     }
 
     render() {
-        const { theme } = this.params;
         let navigationBar = <NavigationBar
             title={this.state.title}
             style={{ backgroundColor: THEME_COLOR }}
@@ -59,7 +58,7 @@ export default class WebViewPage extends PureComponent {
 
         return (
             <View
-                style={GlobalStyles.root_container}
+                style={styles.container}
             >
                 {navigationBar}
                 <WebView

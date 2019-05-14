@@ -12,11 +12,26 @@ const THEME_COLOR = '#678';
 
 class MyPage extends React.Component {
     onClick = (menu) => {
-
+        let RouteName, params = {};
+        switch (menu) {
+            case MORE_MENU.Tutorial:
+                RouteName = 'WebViewPage';
+                params.title = '教程';
+                params.url = 'https://gitlwz.github.io/';
+                break;
+            case MORE_MENU.About:
+                RouteName = 'AboutPage';
+                break;
+            default:
+                break;
+        }
+        if (RouteName) {
+            NavigationUtil.goPage(params, RouteName);
+        }
     }
     getItem = (menu) => {
         return ViewUtil.getMenuItem(
-            this.onClick(menu),
+            () => this.onClick(menu),
             menu,
             THEME_COLOR
         )
@@ -66,7 +81,7 @@ class MyPage extends React.Component {
                     {/*自定义语言*/}
                     {this.getItem(MORE_MENU.Custom_Language)}
                     {/*语言排序*/}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {this.getItem(MORE_MENU.Sort_Language)}
 
                     {/*最热管理*/}
@@ -74,10 +89,10 @@ class MyPage extends React.Component {
                     {/*自定义标签*/}
                     {this.getItem(MORE_MENU.Custom_Key)}
                     {/*标签排序*/}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {this.getItem(MORE_MENU.Sort_Key)}
                     {/*标签移除*/}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {this.getItem(MORE_MENU.Remove_Key)}
 
                     {/*设置*/}
@@ -85,12 +100,12 @@ class MyPage extends React.Component {
                     {/*自定义主题*/}
                     {this.getItem(MORE_MENU.Custom_Theme)}
                     {/*关于作者*/}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {this.getItem(MORE_MENU.About_Author)}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {/*反馈*/}
                     {this.getItem(MORE_MENU.Feedback)}
-                    <View style={GlobalStyles.line}/>
+                    <View style={GlobalStyles.line} />
                     {this.getItem(MORE_MENU.CodePush)}
                 </ScrollView>
             </View>

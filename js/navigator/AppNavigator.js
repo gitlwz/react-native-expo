@@ -11,8 +11,8 @@ import { createReactNavigationReduxMiddleware, createReduxContainer } from 'reac
 import WelcomePage from "../page/WelcomePage";
 import HomePage from "../page/HomePage";
 import DetailPage from "../page/DetailPage";
-import FetchDemoPage from "../page/FetchDemoPage"
-import AsyncStorageDemoPage from "../page/AsyncStorageDemoPage"
+import WebViewPage from "../page/WebViewPage"
+import AboutPage from "../page/about/AboutPage"
 import DataStoreDemoPage from "../page/DataStoreDemoPage"
 
 const InitNavigator = createStackNavigator({
@@ -37,16 +37,16 @@ const MainNavigator = createStackNavigator({
             header: null
         }
     },
-    FetchDemoPage: {
-        screen: FetchDemoPage,
+    WebViewPage: {
+        screen: WebViewPage,
         navigationOptions: {
-            title: "FetchDemoPage"
+            header: null
         }
     },
-    AsyncStorageDemoPage: {
-        screen: AsyncStorageDemoPage,
+    AboutPage: {
+        screen: AboutPage,
         navigationOptions: {
-            title: "AsyncStorageDemoPage"
+            header: null
         }
     },
     DataStoreDemoPage: {
