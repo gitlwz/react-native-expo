@@ -13,14 +13,17 @@ const THEME_COLOR = '#678';
 
 class MyPage extends React.Component {
     onClick = (menu) => {
+        const { theme } = this.props;
         let RouteName, params = {};
         switch (menu) {
             case MORE_MENU.Tutorial:
                 RouteName = 'WebViewPage';
                 params.title = '教程';
+                params.theme = theme;
                 params.url = 'https://gitlwz.github.io/';
                 break;
             case MORE_MENU.Sort_Key:
+                params.theme = theme;
                 RouteName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_key;
                 break;
@@ -29,20 +32,24 @@ class MyPage extends React.Component {
                 onShowCustomThemeView(true);
                 break;
             case MORE_MENU.Sort_Language:
+                params.theme = theme;
                 RouteName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_language;
                 break;
             case MORE_MENU.About:
+                params.theme = theme;
                 RouteName = 'AboutPage';
                 break;
             case MORE_MENU.Custom_Key:
             case MORE_MENU.Custom_Language:
             case MORE_MENU.Remove_Key:
+                params.theme = theme;
                 RouteName = 'CustomKeyPage';
                 params.isRemoveKey = menu === MORE_MENU.Remove_Key;
                 params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
                 break;
             case MORE_MENU.About_Author:
+                params.theme = theme;
                 RouteName = 'AboutMePage';
                 break;
             default:

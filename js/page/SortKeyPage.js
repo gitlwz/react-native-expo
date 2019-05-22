@@ -145,10 +145,11 @@ class SortKeyPage extends Component {
 
     render() {
         let title = this.params.flag === FLAG_LANGUAGE.flag_language ? '语言排序' : '标签排序';
+        const { theme } = this.params
         let navigationBar = <NavigationBar
             title={title}
             leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
-            style={{backgroundColor:THEME_COLOR}}
+            style={theme.styles.navBar}
             rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
         />;
         return <View 
@@ -170,7 +171,7 @@ class SortKeyPage extends Component {
 
 class SortCell extends Component {
     render() {
-        // const {theme} = this.props;
+        const {theme} = this.props;
         return <TouchableHighlight
             underlayColor={'#eee'}
             style={this.props.data.checked ? styles.item : styles.hidden}
@@ -179,7 +180,7 @@ class SortCell extends Component {
                 <MaterialCommunityIcons
                     name={'sort'}
                     size={16}
-                    style={{marginRight: 10, color: THEME_COLOR}}/>
+                    style={{marginRight: 10, color: theme.themeColor}}/>
                 <Text>{this.props.data.name}</Text>
             </View>
         </TouchableHighlight>

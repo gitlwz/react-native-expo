@@ -161,6 +161,7 @@ class PopularTab extends React.PureComponent {
             onSelect={
                 (callBack) => {
                     NavigationUtil.goPage({
+                        theme,
                         projectModel: item,
                         flag: FLAG_STORAGE.flag_popular,
                         callBack: callBack

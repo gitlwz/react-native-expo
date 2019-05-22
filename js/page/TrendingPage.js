@@ -216,6 +216,7 @@ class TrendingTab extends React.PureComponent {
             onSelect={
                 (callBack) => {
                     NavigationUtil.goPage({
+                        theme,
                         projectModel: item,
                         flag: FLAG_STORAGE.flag_trending,
                         callBack: callBack

@@ -29,10 +29,12 @@ export default class MyPage extends React.Component {
             case MORE_MENU.Tutorial:
                 RouteName = 'WebViewPage';
                 params.title = '教程';
+                params.theme = this.params.theme
                 params.url = 'https://gitlwz.github.io/';
                 break;
             case MORE_MENU.About_Author:
                 RouteName = 'AboutMePage';
+                params.theme = this.params.theme;
                 break;
             case MORE_MENU.Feedback:
                 const url = 'mailto://crazycodeboy@gmail.com';
@@ -55,10 +57,11 @@ export default class MyPage extends React.Component {
         }
     }
     getItem = (menu) => {
+        const { theme } =this.params
         return ViewUtil.getMenuItem(
             () => this.onClick(menu),
             menu,
-            THEME_COLOR
+            theme.themeColor
         )
     }
     render() {

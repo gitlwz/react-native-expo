@@ -134,6 +134,7 @@ class FavoriteTab extends PureComponent {
             projectModel={item}
             onSelect={(callback) => {
                 NavigationUtil.goPage({
+                    theme,
                     projectModel: item,
                     flag: this.storeName,
                     callback,

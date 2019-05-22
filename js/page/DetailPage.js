@@ -80,12 +80,13 @@ export default class DetailPage extends React.PureComponent {
         )
     }
     render() {
+        const { theme } = this.params
         const titleLayoutStyle = this.title.length > 20 ? { paddingRight: 30 } : null;
         let navigationBar = <NavigationBar
             leftButton={ViewUtil.getLeftBackButton(this.onBack)}
             titleLayoutStyle={titleLayoutStyle}
             title={this.title}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={theme.styles.navBar}
             rightButton={this.renderRightButton()}
         />;
         return (
