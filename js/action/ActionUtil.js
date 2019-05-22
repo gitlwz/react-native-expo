@@ -11,7 +11,7 @@ import Utils from "../util/Utils";
  * @param favoriteDao
  * @param params 其他参数
  */
-export function handleData(actionType, dispatch, storeName, data, pageSize, favoriteDao) {
+export function handleData(actionType, dispatch, storeName, data, pageSize, favoriteDao,params = {}) {
     let fixItems = [];
     if (data && data.data) {
         if (Array.isArray(data.data)) {
@@ -29,6 +29,7 @@ export function handleData(actionType, dispatch, storeName, data, pageSize, favo
             projectModels: projectModels,
             storeName,
             pageIndex: 1
+            ...params
         })
     });
 }
