@@ -24,6 +24,10 @@ class MyPage extends React.Component {
                 RouteName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_key;
                 break;
+            case MORE_MENU.Custom_Theme:
+                const { onShowCustomThemeView } = this.props;
+                onShowCustomThemeView(true);
+                break;
             case MORE_MENU.Sort_Language:
                 RouteName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_language;
@@ -49,22 +53,24 @@ class MyPage extends React.Component {
         }
     }
     getItem = (menu) => {
+        const { theme } = this.props;
         return ViewUtil.getMenuItem(
             () => this.onClick(menu),
             menu,
-            THEME_COLOR
+            theme.themeColor
         )
     }
     render() {
+        const { theme } = this.props;
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: 'light-content',
         };
         let navigationBar =
             <NavigationBar
                 title={'我的'}
                 statusBar={statusBar}
-                style={{ backgroundColor: THEME_COLOR }}
+                style={theme.styles.navBar}
             />;
         return (
             <View style={GlobalStyles.root_container}>
@@ -80,7 +86,7 @@ class MyPage extends React.Component {
                                 size={40}
                                 style={{
                                     marginRight: 10,
-                                    color: THEME_COLOR,
+                                    color: theme.themeColor,
                                 }}
                             />
                             <Text>GitHub Popular</Text>
@@ -91,7 +97,7 @@ class MyPage extends React.Component {
                             style={{
                                 marginRight: 10,
                                 alignSelf: 'center',
-                                color: THEME_COLOR,
+                                color: theme.themeColor,
                             }} />
                     </TouchableOpacity>
                     <View style={GlobalStyles.line} />
@@ -158,9 +164,11 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    theme: state.theme.theme,
+});
 const mapDispatchToProps = dispatch => ({
-    onThemeChange: theme => dispatch(actions.onThemeChange(theme))
+    onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyPage);

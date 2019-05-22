@@ -36,12 +36,12 @@ class TrendingPage extends React.PureComponent {
     }
     _genTabs = () => {
         const tabs = {};
-        const { keys } = this.props;
+        const { keys, theme } = this.props;
         this.preKeys = keys;
         keys.forEach((item, index) => {
             if (item.checked) {
                 tabs[`tab${index}`] = {
-                    screen: props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item.name}></TrendingTabPage>,
+                    screen: props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item.name} theme={theme}></TrendingTabPage>,
                     navigationOptions: {
                         title: item.name
                     }
@@ -84,7 +84,9 @@ class TrendingPage extends React.PureComponent {
         />
     }
     _tabNav = () => {
-        if (!this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.keys)) {
+        const { theme } = this.props
+        if (theme !== this.theme || !this.tabNav || ArrayUtil.isEqual(this.preKeys, this.props.keys)) {
+            this.theme = theme;
             this.tabNav = createAppContainer(
                 createMaterialTopTabNavigator(
                     this._genTabs(), {
@@ -93,7 +95,7 @@ class TrendingPage extends React.PureComponent {
                             upperCaseLabel: false,
                             scrollEnabled: true,
                             style: {
-                                backgroundColor: "#678",
+                                backgroundColor: theme.themeColor,
                                 height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
                             },
                             indicatorStyle: styles.indicatorStyle,
@@ -107,15 +109,15 @@ class TrendingPage extends React.PureComponent {
         return this.tabNav
     }
     render() {
-        const { keys } = this.props;
+        const { keys, theme } = this.props;
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: "light-content",
         }
         let navigationBar = <NavigationBar
             titleView={this.renderTitleView()}
             statusBar={statusBar}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={theme.styles.navBar}
         />
         const TabNavigator = keys.length > 0 ? this._tabNav() : null;
         return (
@@ -130,6 +132,7 @@ class TrendingPage extends React.PureComponent {
 
 const mapTrendingStateToProps = state => ({
     keys: state.language.languages,
+    theme: state.theme.theme,
 });
 const mapTrendingDispatchToProps = dispatch => ({
     onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
@@ -205,8 +208,10 @@ class TrendingTab extends React.PureComponent {
         return URL + key + '?' + this.timeSpan.searchText;
     }
     _renderItem = (data) => {
+        const { theme } = this.props
         const item = data.item
         return <TrendingItem
+            theme={theme}
             projectModel={item}
             onSelect={
                 (callBack) => {
@@ -230,9 +235,8 @@ class TrendingTab extends React.PureComponent {
             </View>
     }
     render() {
-        const { trending } = this.props;
+        const { theme } = this.props;
         let store = this._store();
-        console.log("&&&&&&&&&", store)
         return (
             <View style={styles.container}>
                 <FlatList
@@ -242,16 +246,15 @@ class TrendingTab extends React.PureComponent {
                     refreshControl={
                         <RefreshControl
                             title={"Loading"}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={this._loadData}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                     ListFooterComponent={this._genIndicator()}
                     onEndReached={() => {
-                        console.log('---onEndReached----');
                         setTimeout(() => {
                             if (this.canLoadMore) {//fix 滚动时两次调用onEndReached https://github.com/facebook/react-native/issues/14015
                                 this._loadData(true);
@@ -262,7 +265,6 @@ class TrendingTab extends React.PureComponent {
                     onEndReachedThreshold={0.5}
                     onMomentumScrollBegin={() => {
                         this.canLoadMore = true; //fix 初始化时页调用onEndReached的问题
-                        console.log('---onMomentumScrollBegin-----')
                     }}
                 />
                 <Toast

@@ -23,24 +23,25 @@ class FavoritePage extends PureComponent {
 
 
     render() {
+        const { theme } = this.props;
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: 'light-content',
         };
         let navigationBar = <NavigationBar
             title={'收藏'}
             statusBar={statusBar}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={theme.styles.navBar}
         />;
         const TabNavigator = createAppContainer(createMaterialTopTabNavigator({
             'Popular': {
-                screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_popular} theme={THEME_COLOR} />,//初始化Component时携带默认参数 @https://github.com/react-navigation/react-navigation/issues/2392
+                screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_popular} theme={theme} />,//初始化Component时携带默认参数 @https://github.com/react-navigation/react-navigation/issues/2392
                 navigationOptions: {
                     title: '最热',
                 },
             },
             'Trending': {
-                screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_trending} theme={THEME_COLOR} />,//初始化Component时携带默认参数 @https://github.com/react-navigation/react-navigation/issues/2392
+                screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_trending} theme={theme} />,//初始化Component时携带默认参数 @https://github.com/react-navigation/react-navigation/issues/2392
                 navigationOptions: {
                     title: '趋势',
                 },
@@ -50,7 +51,7 @@ class FavoritePage extends PureComponent {
                     tabStyle: styles.tabStyle,
                     upperCaseLabel: false,//是否使标签大写，默认为true
                     style: {
-                        backgroundColor: THEME_COLOR,//TabBar 的背景颜色
+                        backgroundColor: theme.themeColor,//TabBar 的背景颜色
                         height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
                     },
                     indicatorStyle: styles.indicatorStyle,//标签指示器的样式
@@ -65,11 +66,11 @@ class FavoritePage extends PureComponent {
     }
 }
 
-// const mapFavoriteStateToProps = state => ({
-//     theme: state.theme.theme,
-// });
+const mapFavoriteStateToProps = state => ({
+    theme: state.theme.theme,
+});
 //注意：connect只是个function，并不应定非要放在export后面
-export default connect()(FavoritePage);
+export default connect(mapFavoriteStateToProps)(FavoritePage);
 
 class FavoriteTab extends PureComponent {
     constructor(props) {
@@ -127,8 +128,9 @@ class FavoriteTab extends PureComponent {
     renderItem(data) {
         const item = data.item;
         const Item = this.storeName === FLAG_STORAGE.flag_popular ? PopularItem : TrendingItem;
+        const { theme } = this.props;
         return <Item
-            theme={THEME_COLOR}
+            theme={theme}
             projectModel={item}
             onSelect={(callback) => {
                 NavigationUtil.goPage({
@@ -142,6 +144,7 @@ class FavoriteTab extends PureComponent {
     }
 
     render() {
+        const { theme } =this.props
         let store = this._store();
         return (
             <View style={styles.container}>
@@ -152,11 +155,11 @@ class FavoriteTab extends PureComponent {
                     refreshControl={
                         <RefreshControl
                             title={'Loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => this.loadData(true)}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                 />
@@ -170,7 +173,7 @@ class FavoriteTab extends PureComponent {
 
 
 const mapStateToProps = state => ({
-    favorite: state.favorite,
+    favorite: state.favorite
 });
 
 const mapDispatchToProps = dispatch => ({

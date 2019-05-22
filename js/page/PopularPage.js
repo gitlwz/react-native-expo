@@ -31,11 +31,11 @@ class PopularPage extends React.Component {
     }
     _genTabs = () => {
         const tabs = {};
-        const { keys } = this.props;
+        const { keys, theme } = this.props;
         keys.forEach((item, index) => {
             if (item.checked) {
                 tabs[`tab${index}`] = {
-                    screen: props => <PopularTabPage {...props} tabLabel={item.name}></PopularTabPage>,
+                    screen: props => <PopularTabPage {...props} tabLabel={item.name} theme={theme}></PopularTabPage>,
                     navigationOptions: {
                         title: item.name
                     }
@@ -45,15 +45,15 @@ class PopularPage extends React.Component {
         return tabs;
     }
     render() {
-        const { keys } = this.props;
+        const { keys, theme } = this.props;
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            backgroundColor: theme.themeColor,
             barStyle: "light-content",
         }
         let navigationBar = <NavigationBar
             title={'最热'}
             statusBar={statusBar}
-            style={{ backgroundColor: THEME_COLOR }}
+            style={theme.styles.navBar}
         />
         const TabNavigator = keys.length > 0 ? createAppContainer(
             createMaterialTopTabNavigator(
@@ -63,7 +63,7 @@ class PopularPage extends React.Component {
                         upperCaseLabel: false,
                         scrollEnabled: true,
                         style: {
-                            backgroundColor: "#678",
+                            backgroundColor: theme.themeColor,
                             height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
                         },
                         indicatorStyle: styles.indicatorStyle,
@@ -84,6 +84,7 @@ class PopularPage extends React.Component {
 
 const mapPopularStateToProps = state => ({
     keys: state.language.keys,
+    theme: state.theme.theme,
 });
 const mapPopularDispatchToProps = dispatch => ({
     onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
@@ -153,8 +154,10 @@ class PopularTab extends React.PureComponent {
     }
     _renderItem = (data) => {
         const item = data.item
+        const { theme } = this.props;
         return <PopularItem
             projectModel={item}
+            theme={theme}
             onSelect={
                 (callBack) => {
                     NavigationUtil.goPage({
@@ -177,7 +180,8 @@ class PopularTab extends React.PureComponent {
             </View>
     }
     render() {
-        const { popular } = this.props;
+        const { theme } = this.props;
+
         let store = this._store();
         return (
             <View style={styles.container}>
@@ -188,11 +192,11 @@ class PopularTab extends React.PureComponent {
                     refreshControl={
                         <RefreshControl
                             title={"Loading"}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={this._loadData}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                     ListFooterComponent={this._genIndicator()}
@@ -221,7 +225,7 @@ class PopularTab extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    popular: state.popular
+    popular: state.popular,
 });
 const mapDispatchToProps = dispatch => ({
     onRefreshPopular: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onRefreshPopular(storeName, url, pageSize, favoriteDao)),
