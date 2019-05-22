@@ -20,6 +20,14 @@ class MyPage extends React.Component {
                 params.title = '教程';
                 params.url = 'https://gitlwz.github.io/';
                 break;
+            case MORE_MENU.Sort_Key:
+                RouteName = 'SortKeyPage';
+                params.flag = FLAG_LANGUAGE.flag_key;
+                break;
+            case MORE_MENU.Sort_Language:
+                RouteName = 'SortKeyPage';
+                params.flag = FLAG_LANGUAGE.flag_language;
+                break;
             case MORE_MENU.About:
                 RouteName = 'AboutPage';
                 break;

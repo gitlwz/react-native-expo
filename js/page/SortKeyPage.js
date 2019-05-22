@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, TouchableHighlight, StyleSheet, View, Text} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet, View, Text,Vibration} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../action/index'
 import NavigationUtil from '../navigator/NavigationUtil'
@@ -10,8 +10,7 @@ import ViewUtil from "../util/ViewUtil";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import ArrayUtil from "../util/ArrayUtil";
 import SortableListView from 'react-native-sortable-listview'
-import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
-import GlobalStyles from "../res/styles/GlobalStyles";
+// import GlobalStyles from "../res/styles/GlobalStyles";
 
 const THEME_COLOR = '#678';
 
@@ -119,6 +118,7 @@ class SortKeyPage extends Component {
             let index = this.props.language[flag].indexOf(item);
             //进行替换
             sortResultArray.splice(index, 1, this.state.checkedArray[i]);
+            
         }
         return sortResultArray;
     }
@@ -144,17 +144,15 @@ class SortKeyPage extends Component {
     }
 
     render() {
-        const {theme} = this.params;
         let title = this.params.flag === FLAG_LANGUAGE.flag_language ? '语言排序' : '标签排序';
         let navigationBar = <NavigationBar
             title={title}
             leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
-            style={theme.styles.navBar}
+            style={{backgroundColor:THEME_COLOR}}
             rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
         />;
-        return <SafeAreaViewPlus
-            style={GlobalStyles.root_container}
-            topColor={theme.themeColor}
+        return <View 
+            style={styles.container}
         >
             {navigationBar}
             <SortableListView
@@ -166,13 +164,13 @@ class SortKeyPage extends Component {
                 }}
                 renderRow={row => <SortCell data={row} {...this.params}/>}
             />
-        </SafeAreaViewPlus>
+        </View>
     }
 }
 
 class SortCell extends Component {
     render() {
-        const {theme} = this.props;
+        // const {theme} = this.props;
         return <TouchableHighlight
             underlayColor={'#eee'}
             style={this.props.data.checked ? styles.item : styles.hidden}
@@ -181,7 +179,7 @@ class SortCell extends Component {
                 <MaterialCommunityIcons
                     name={'sort'}
                     size={16}
-                    style={{marginRight: 10, color: theme.themeColor}}/>
+                    style={{marginRight: 10, color: THEME_COLOR}}/>
                 <Text>{this.props.data.name}</Text>
             </View>
         </TouchableHighlight>

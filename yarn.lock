@@ -4978,6 +4978,11 @@ react-native-screens@1.0.0-alpha.22, "react-native-screens@^1.0.0 || ^1.0.0-alph
   resolved "http://registry.npm.taobao.org/react-native-screens/download/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha1-ehIDd7Uqqbu5TQuFQaAUAmvpKJs=
 
+react-native-sortable-listview@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.npmjs.org/react-native-sortable-listview/-/react-native-sortable-listview-0.2.8.tgz#0d514fa73eb406a46baea96aa38a71e40257af90"
+  integrity sha512-1zEzgMHv32w4oGNEMuwHRxK8uGYQjJeufwq/2ispmRYctR1oGc0eDgg/WSPChdNlInw4cpK/fPRd6sfLPHP1Kw==
+
 react-native-svg@8.0.10:
   version "8.0.10"
   resolved "http://registry.npm.taobao.org/react-native-svg/download/react-native-svg-8.0.10.tgz#b07e2342d1486220f5fda1a584e316e7d2d1f392"
