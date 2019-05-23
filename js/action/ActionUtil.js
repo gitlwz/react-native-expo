@@ -28,7 +28,7 @@ export function handleData(actionType, dispatch, storeName, data, pageSize, favo
             items: fixItems,
             projectModels: projectModels,
             storeName,
-            pageIndex: 1
+            pageIndex: 1,
             ...params
         })
     });
