@@ -18,7 +18,7 @@ import CustomKeyPage from "../page/CustomKeyPage"
 
 import DataStoreDemoPage from "../page/DataStoreDemoPage"
 import SortKeyPage from "../page/SortKeyPage"
-
+import SearchPage from "../page/SearchPage"
 const InitNavigator = createStackNavigator({
     WelcomePage: {
         screen: WelcomePage,
@@ -67,6 +67,12 @@ const MainNavigator = createStackNavigator({
     },
     SortKeyPage: {
         screen: SortKeyPage,
+        navigationOptions: {
+            header: null
+        }
+    },
+    SearchPage: {
+        screen: SearchPage,
         navigationOptions: {
             header: null
         }
