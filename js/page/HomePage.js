@@ -4,8 +4,8 @@ import NavigationUtil from "../navigator/NavigationUtil"
 import BackPressComponent from "../common/BackPressComponent";
 import { NavigationActions } from "react-navigation";
 import { connect } from 'react-redux';
-import { View } from "react-native";
 import CustomTheme from '../page/CustomTheme';
+import SafeAreaViewPlus from "../common/SafeAreaViewPlus"
 import actions from "../action";
 class HomePage extends React.Component {
     constructor(props) {
@@ -41,10 +41,13 @@ class HomePage extends React.Component {
         />)
     }
     render() {
-        return <View style={{ flex: 1 }}>
+        const { theme } = this.props;
+        return <SafeAreaViewPlus
+                topColor={theme.themeColor}
+            >
             <DynamicTabNavigator />
             {this.renderCustomThemeView()}
-        </View>
+        </SafeAreaViewPlus>
 
     }
 }
