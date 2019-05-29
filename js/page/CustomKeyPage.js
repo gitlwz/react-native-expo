@@ -11,7 +11,7 @@ import CheckBox from 'react-native-check-box'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ArrayUtil from "../util/ArrayUtil";
 
-// import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
+import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
 const THEME_COLOR = "#678"
 class CustomKeyPage extends Component {
     constructor(props) {
@@ -171,7 +171,7 @@ class CustomKeyPage extends Component {
     }
 
     render() {
-        const {theme} = this.params;
+        const { theme } = this.params;
         let title = this.isRemoveKey ? '标签移除' : '自定义标签';
         title = this.params.flag === FLAG_LANGUAGE.flag_language ? '自定义语言' : title;
         let rightButtonTitle = this.isRemoveKey ? '移除' : '保存';
@@ -181,14 +181,14 @@ class CustomKeyPage extends Component {
             style={theme.styles.navBar}
             rightButton={ViewUtil.getRightButton(rightButtonTitle, () => this.onSave())}
         />;
-        return <View
-            style={styles.container}
+        return <SafeAreaViewPlus
+            topColor={theme.themeColor}
         >
             {navigationBar}
             <ScrollView>
                 {this.renderView()}
             </ScrollView>
-        </View>
+        </SafeAreaViewPlus>
     }
 }
 

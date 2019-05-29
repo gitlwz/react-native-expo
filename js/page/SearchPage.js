@@ -24,6 +24,7 @@ import BackPressComponent from "../common/BackPressComponent";
 import GlobalStyles from '../res/GlobalStyles'
 import ViewUtil from "../util/ViewUtil";
 import Utils from "../util/Utils";
+import SafeAreaViewPlus from "../common/SafeAreaViewPlus"
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 const pageSize = 10;//设为常量，防止修改
 class SearchPage extends Component {
@@ -225,8 +226,7 @@ class SearchPage extends Component {
             {indicatorView}
             {listView}
         </View>;
-        return <View
-            style={GlobalStyles.root_container}
+        return <SafeAreaViewPlus
             topColor={theme.themeColor}
         >
             {statusBar}
@@ -234,7 +234,7 @@ class SearchPage extends Component {
             {resultView}
             {bottomButton}
             <Toast ref={toast => this.toast = toast}/>
-        </View>
+        </SafeAreaViewPlus>
     }
 }
 

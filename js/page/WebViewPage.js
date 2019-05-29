@@ -4,7 +4,7 @@ import NavigationBar from '../common/NavigationBar'
 import ViewUtil from "../util/ViewUtil";
 import NavigationUtil from "../navigator/NavigationUtil";
 import BackPressComponent from "../common/BackPressComponent";
-// import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
+import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
 import GlobalStyles from "../res/GlobalStyles";
 const THEME_COLOR = '#678';
 
@@ -58,8 +58,8 @@ export default class WebViewPage extends PureComponent {
         />;
 
         return (
-            <View
-                style={styles.container}
+            <SafeAreaViewPlus
+                topColor={theme.themeColor}
             >
                 {navigationBar}
                 <WebView
@@ -68,7 +68,7 @@ export default class WebViewPage extends PureComponent {
                     onNavigationStateChange={e => this.onNavigationStateChange(e)}
                     source={{ uri: this.state.url }}
                 />
-            </View>
+            </SafeAreaViewPlus>
         );
     }
 }
